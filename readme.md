@@ -13,7 +13,6 @@
           "phone": "9328620376",
           "password": "ravi@123$",
           "confirm_password": "ravi@123$"
-        }
-    ```
+        }```
   - user:signup:fail
   - user:signup:success
