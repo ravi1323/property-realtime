@@ -68,6 +68,7 @@ module.exports.verityJWT = (token) => {
     /**
      * !pending
      * todo: return the status of the token, is expired or invalid
+     * ?doc - https://github.com/auth0/node-jsonwebtoken
      */
     if(err) {
       console.log(err)
