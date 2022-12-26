@@ -1,5 +1,12 @@
 # events
   - user:signin
+    - payload
+      ```json
+      {
+        "email": "webbyworking@gmail.com",
+        "password": "ravi@123$"
+      }
+      ```
   - user:signin:fail
   - user:signin:success
   -----

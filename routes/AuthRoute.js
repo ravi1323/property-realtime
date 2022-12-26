@@ -4,7 +4,8 @@ const {
   validateJson
 } = require('../helpers/common')
 const {
-  signupUser
+  signupUser,
+  signinUser
 } = require('../controllers/AuthController');
 
 
@@ -39,7 +40,7 @@ module.exports.signin = (io, socket, payload) => {
     })
     socket.emit('user:signin:fail', errors);
   } else {
-    socket.emit('user:signin:success', payload);
+    signinUser(io, socket, JSON.parse(payload));
   }
 }
 
