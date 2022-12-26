@@ -107,6 +107,8 @@ module.exports.signup = (io, socket, payload) => {
     })
     socket.emit('user:signup:fail', errors);
   } else {
-    signupUser(io, socket, payload);
+
+    // executing controller code...
+    signupUser(io, socket, JSON.parse(payload));
   }
 }

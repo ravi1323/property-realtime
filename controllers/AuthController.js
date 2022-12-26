@@ -17,33 +17,54 @@ module.exports.signupUser = (io, socket, payload) => {
     lastname,
     email,
     phone,
-    satt: GenPassword.salt,
+    salt: GenPassword.salt,
     hash: GenPassword.hash
   }
 
   const newUser = AuthModel(user)
-  newUser.save().then(user => {
-    const jwt = issueJWT(user.id);
+  newUser.save((err, result) => {
+    if(err) {
+      if (err.errors['phone'].message) {
+        errors['phone'] = []
+        errors['phone'].push(err.errors['phone'].message)
+      }
+      if (err.errors['email'].message) {
+        errors['email'] = []
+        errors['email'].push(err.errors['email'].message)
+      }
+      if (!errors['phone'] && !errors['email']) {
+        errors['general'] = []
+        errors['general'].push(err.message);
+      }
 
-    socket.emit("user:signup:success", {
-      success: true,
-      message: "Registered Successfully",
-      user: {
-        phone: result.phone,
-        email: result.email,
-        id: result.id,
-      },
-      token: jwt.token,
-      expires: jwt.expire,
-    });
-  }).catch(err => {
-    if (err.errors['email'].message) {
-      errors['email'] = []
-      errors['email'].push(err.errors['email'].message)
+      socket.emit("user:signup:fail", errors);
     } else {
-      errors['general'] = []
-      errors['general'].push(err.message);
+      const jwt = issueJWT(user.id);
+
+      socket.emit("user:signup:success", {
+        success: true,
+        message: "Registered Successfully",
+        user: {
+          phone: result.phone,
+          email: result.email,
+          id: result.id,
+          email_verified: result.email_verified,
+          phone_verified: result.phone_verified,
+        },
+        token: jwt.token,
+        expires: jwt.expire,
+      });
     }
-    socket.emit("user:signup:fail", errors);
-  })
+  });
+}
+
+module.exports.signinUser = (io, socket, payload) => {
+  const errors = {};
+  const {
+    firstname,
+    lastname,
+    phone,
+    email,
+    password
+  } = payload;
 }

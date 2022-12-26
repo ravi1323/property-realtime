@@ -14,6 +14,10 @@ const AuthSchema = mongoose.Schema({
     required: true,
     unique: true,
   },
+  email_verified: {
+    type: Boolean,
+    default: false
+  },
   hash: {
     type: String,
     required: true,
@@ -23,7 +27,13 @@ const AuthSchema = mongoose.Schema({
     required: true,
   },
   phone: {
-    type: Number,
+    type: String,
+    required: true,
+    unique: true,
+  },
+  phone_verified: {
+    type: Boolean,
+    default: false
   },
   created_at: {
     type: Date,
@@ -39,5 +49,9 @@ AuthSchema.path("email").validate(async (email) => {
   const count = await mongoose.models.auth.countDocuments({ email });
   return !count;
 }, "Email already exist.");
+AuthSchema.path("phone").validate(async (phone) => {
+  const count = await mongoose.models.auth.countDocuments({ phone });
+  return !count;
+}, "Phone already exist.");
 
 module.exports = mongoose.model("auth", AuthSchema);

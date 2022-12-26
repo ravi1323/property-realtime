@@ -6,8 +6,8 @@
   "author": "ravi-vora",
   "license": "MIT",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node keypair.js && node server.js",
+    "dev": "node keypair.js && nodemon server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
