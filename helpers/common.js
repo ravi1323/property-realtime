@@ -63,6 +63,19 @@ module.exports.issueJWT = (id) => {
 	}
 }
 
+module.exports.verityJWT = (token) => {
+  jsonwebtoken.verify(token, PUB_KEY, function(err, decoded) {
+    /**
+     * !pending
+     * todo: return the status of the token, is expired or invalid
+     */
+    if(err) {
+      console.log(err)
+    }
+    console.log(decoded.foo)
+  });
+}
+
 module.exports.comparePassword = (password, hash, salt) => {
 	const newHash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex')
 	return newHash === hash
