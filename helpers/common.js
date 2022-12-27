@@ -3,8 +3,10 @@ const jsonwebtoken = require('jsonwebtoken')
 const fs = require('fs')
 const path = require('path')
 
-const PRIV_KEY = fs.readFileSync(path.join(__dirname, "..", "id_rsa_priv.pem"))
-const PUB_KEY = fs.readFileSync(path.join(__dirname, "..", "id_rsa_pub.pem"))
+
+const PUB_KEY = fs.readFileSync(path.join(__dirname, "..", "id_rsa_pub.pem"), 'utf-8')
+const PRIV_KEY = fs.readFileSync(path.join(__dirname, "..", "id_rsa_priv.pem"), 'utf-8')
+
 
 module.exports.validateEmail = (email) => {
   var regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
@@ -56,7 +58,8 @@ module.exports.issueJWT = (id) => {
 		iat:Date.now(),
 		exp:Math.floor(Date.now() / 1000) + (24 * 60 *60)
 	}
-	const jwt = jsonwebtoken.sign(payload, PRIV_KEY, {algorithm:'RS256'})
+
+	const jwt = jsonwebtoken.sign(payload, PUB_KEY, {algorithm:'HS256'})
 	return {
 		token: 'Bearer ' + jwt,
 		expire:expiresIn
